@@ -15,9 +15,11 @@ type Options struct {
 	Provider   string
 }
 
-func NewAgent(name, instructions, model string) *Agent { 
-		return &Agent{
+func NewAgent(name string, instructions string, model string, llm llms.Model) *Agent {
+	return &Agent{
 		Name:         name,
 		Instructions: instructions,
-		Model:       
+		Model:        model,
+		llm:          llm,
+	}
 }
