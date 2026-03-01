@@ -1,6 +1,21 @@
 package agent
 
-import "github.com/tmc/langchaingo/llms"
+import (
+	"context"
+	"errors"
+	"fmt"
+	"log"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/tmc/langchaingo/llms"
+	"github.com/tmc/langchaingo/llms/openai"
+	"go.opentelemetry.io/otel"
+)
+
+var (
+	tracer   = otel.Tracer("agent")
+	validate = validator.New()
+)
 
 type Agent struct {
 	Name         string
@@ -10,16 +25,14 @@ type Agent struct {
 }
 
 type Options struct {
-	LLMBaseURL string
-	LLMApiKey  string
-	Provider   string
+	LLMBaseURL string `validate:"required,url"`
+	LLMAPIKey  string `validate:"required,min=3"`
+	Model      string `validate:"required"`
 }
 
-func NewAgent(name string, instructions string, model string, llm llms.Model) *Agent {
-	return &Agent{
+func NewAgent(name, instructions, model string) *Agent { 
+		return &Agent{
 		Name:         name,
 		Instructions: instructions,
-		Model:        model,
-		llm:          llm,
-	}
+		Model:       
 }
